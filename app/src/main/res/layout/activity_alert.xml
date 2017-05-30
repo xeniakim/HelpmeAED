@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    android:orientation="vertical"
+    android:background="#fffdf8"
+    tools:context="com.sojong.jiyun.helpmeaed.AlertActivity">
+    <TextView
+        android:id="@+id/text_view_alert_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:text="alert_message"
+        android:textSize="24dp"
+        android:textColor="#000000"/>
+
+    <ImageView
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/heart_attack" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center_horizontal"
+        android:text="환자 주변 제세동기 위치 보기"
+        android:textSize="24dp"
+        android:textColor="#000000"
+        android:background="@color/colorPrimary"
+        android:onClick="showMap"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:padding="12dp"
+        android:text="알림 중지"
+        android:textSize="24dp"
+        android:textColor="#000000"
+        android:background="@color/colorPrimary"
+        android:onClick="stopAlert"/>
+</LinearLayout>

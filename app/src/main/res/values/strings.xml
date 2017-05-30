@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">HelpMeAED</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="ConnectionAcceptedMsg">Service Connection from HelloAccessory(C) has been accepted.</string>
+    <string name="ConnectionEstablishedMsg">Service Connection with HelloAccessory(C) has been established.</string>
+    <string name="ConnectionTerminateddMsg">Service Connection with HelloAccessory(C) has been terminated.</string>
+    <string name="ConnectionAlreadyExist">Service Connection has already been existed!!!</string>
+    <string name="ConnectionAlreadyDisconnected">Service Connection has already been disconnected!!!</string>
+</resources>
