@@ -60,6 +60,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import static android.R.attr.handle;
 import static com.sojong.jiyun.helpmeaed.R.drawable.target;
 import static com.sojong.jiyun.helpmeaed.R.id.map;
+import static com.sojong.jiyun.helpmeaed.RegisterActivity.user_id;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -71,9 +72,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextView text_view_current_location;
     public String sendingMessage;
 
-    public int userId;
+
+    //public int userId;   //public user_id register activity에 있음
     private double lat;
     private double lon;
+
+    public final static int USER_NORMAL = 0;
+    public final static int USER_EMERGENCY = 1;
+    public static int userState;
+
 
     public final static int REPEAT_DELAY = 5000;
     public Handler handler;
@@ -130,7 +137,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // build jsonObject
         JSONObject jsonObject = new JSONObject();
-        jsonObject.accumulate("user_id", userId);
+        jsonObject.accumulate("user_id", user_id); //회원가입 시 생성된 아이디
         jsonObject.accumulate("lat", lat);
         jsonObject.accumulate("lon", lon);
 
@@ -139,10 +146,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             msg = jsonObject.toString();
         }
 
-
+//TODO: 시계와 연결하면 위급상황시 userState 변경
+//        if (userState == USER_NORMAL) {
+//            String URL = "http://45.76.197.124:3000/userRenew";
+//        } else if (userState == USER_EMERGENCY) {
+//            String URL = "http://45.76.197.124:3000/userWarn";
+//        }
 
         // 서버를 설정
-        String URL = "http://45.76.197.124:3000/userLocationTest";
+        //String URL = "http://45.76.197.124:3000/userRenew";
+        String URL = "http://45.76.197.124:3000/userWarn";
+
 
         DefaultHttpClient client = new DefaultHttpClient();
 
@@ -174,7 +188,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 			/* 데이터 보낸 뒤 서버에서 데이터를 받아오는 과정 */
 
             HttpResponse response = client.execute(post);
-
 
             BufferedReader bufreader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "utf-8"));
 

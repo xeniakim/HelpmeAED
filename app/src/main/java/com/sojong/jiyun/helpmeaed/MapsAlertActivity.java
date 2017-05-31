@@ -142,7 +142,7 @@ public class MapsAlertActivity extends FragmentActivity implements OnMapReadyCal
 
 
         // 서버를 설정
-        String URL = "http://45.76.197.124:3000/userLocationTest";
+        String URL = "http://45.76.197.124:3000/userRenew";
 
         DefaultHttpClient client = new DefaultHttpClient();
 

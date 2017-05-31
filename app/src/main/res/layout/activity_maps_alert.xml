@@ -24,4 +24,14 @@
         android:background="#FFFFFFFF"
         android:src="@drawable/target"/>
 
+    <TextView
+        android:id="@+id/text_view_current_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:text="current location"
+        android:textSize="15dp"/>
+
 </RelativeLayout>

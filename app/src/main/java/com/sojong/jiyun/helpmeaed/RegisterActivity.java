@@ -25,6 +25,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import static android.media.CamcorderProfile.get;
+import static com.sojong.jiyun.helpmeaed.MapsActivity.userState;
+import static com.sojong.jiyun.helpmeaed.MapsActivity.USER_NORMAL;
 
 /**
  * Created by Jiyun on 2017-05-30.
@@ -156,6 +158,7 @@ public class RegisterActivity extends Activity {
             user_id = json.getInt("user_id");
             password = json.getString("password");
             gender = json.getString("gender");
+            userState = USER_NORMAL;
 
             Log.e("user_id", Integer.toString(user_id));
             Log.e("password", password);
@@ -171,6 +174,7 @@ public class RegisterActivity extends Activity {
     public void sendUserInfo(View view) throws JSONException {
 
         jsonParser(sendByHttp());
+        finish();
 
     }
 
