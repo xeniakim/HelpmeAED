@@ -74,6 +74,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     //public int userId;   //public user_id register activity에 있음
+    public static int user_id_patient;
+    public static int user_id_tmp;
     private double lat;
     private double lon;
 
@@ -84,6 +86,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public final static int REPEAT_DELAY = 5000;
     public Handler handler;
+
+    public double lat1, lon1, lat2, lon2, lat3, lon3;
 
 
     @Override
@@ -106,7 +110,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         lat = 37.5556352;
         lon = 126.93464719999997;
 
+        lat1 = 0; lon1 = 0; lat2 = 0; lon2 = 0; lat3 = 0; lon3 = 0;
+
         button_current_location = (ImageButton) findViewById(R.id.button_current_location);
+
+
+        user_id_patient = 2014;
+        user_id_tmp = user_id;
 
 
         handler = new Handler()
@@ -115,6 +125,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             {
                 super.handleMessage(msg);
                 button_current_location.performClick();
+
+
+
                 this.sendEmptyMessageDelayed(0, REPEAT_DELAY);        // REPEAT_DELAY 간격으로 계속해서 반복하게 만들어준다
             }
         };
@@ -147,15 +160,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
 //TODO: 시계와 연결하면 위급상황시 userState 변경
-//        if (userState == USER_NORMAL) {
-//            String URL = "http://45.76.197.124:3000/userRenew";
-//        } else if (userState == USER_EMERGENCY) {
-//            String URL = "http://45.76.197.124:3000/userWarn";
-//        }
+        String URL = null;
+
+        if (userState == USER_NORMAL) {
+            URL = "http://45.76.197.124:3000/userRenew";
+        } else if (userState == USER_EMERGENCY) {
+            URL = "http://45.76.197.124:3000/userWarn";
+        }
 
         // 서버를 설정
         //String URL = "http://45.76.197.124:3000/userRenew";
-        String URL = "http://45.76.197.124:3000/userWarn";
+        //String URL = "http://45.76.197.124:3000/userWarn";
 
 
         DefaultHttpClient client = new DefaultHttpClient();
@@ -198,6 +213,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 result += line;
             }
 
+
+
+
+
+
             return result;
 
         } catch (Exception e) {
@@ -220,62 +240,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
      */
 
-    public String[][] jsonParserList(String pRecvServerPage) {
+    public void jsonParser(String responseResult) {
 
 
+//        {lon1 : rows[0].wgs84Lon,
+//                lat1: rows[0].wgs84Lat,
+//                lon2: rows[1].wgs84Lon,
+//                lat2: rows[1].wgs84Lat,
+//                lon3: rows[2].wgs84Lon,
+//                lat3: rows[2].wgs84Lat}
 
-        Log.i("서버에서 받은 전체 내용 : ", pRecvServerPage);
+        Log.e("서버에서 받은 전체 내용 : ", responseResult);
 
 
 
         try {
 
-            JSONObject json = new JSONObject(pRecvServerPage);
-            JSONArray jArr = json.getJSONArray("List");
+            JSONObject json = new JSONObject(responseResult);
 
+            lat1 = json.getDouble("lat1");
+            lon1 = json.getDouble("lon1");
+            lat2 = json.getDouble("lat2");
+            lon2 = json.getDouble("lon2");
+            lat3 = json.getDouble("lat3");
+            lon3 = json.getDouble("lon3");
+            //userState = USER_NORMAL;
 
-            // 받아온 pRecvServerPage를 분석하는 부분
+            Log.e("1", String.format("%f, %f", lat1, lon1));
+            Log.e("2", String.format("%f, %f", lat2, lon2));
+            Log.e("3", String.format("%f, %f", lat3, lon3));
 
-            String[] jsonName = {"msg1", "msg2", "msg3"};
-            String[][] parseredData = new String[jArr.length()][jsonName.length];
+            LatLng latLng1 = new LatLng(lat, lon);
+            LatLng latLng2 = new LatLng(lat, lon);
+            LatLng latLng3 = new LatLng(lat, lon);
 
-            for (int i = 0; i < jArr.length(); i++) {
+            MarkerOptions opt1 = new MarkerOptions();
+            opt1.position(latLng1);
+            MarkerOptions opt2 = new MarkerOptions();
+            opt1.position(latLng2);
+            MarkerOptions opt3 = new MarkerOptions();
+            opt1.position(latLng3);
 
-                json = jArr.getJSONObject(i);
-
-                if(json != null) {
-
-                    for(int j = 0; j < jsonName.length; j++) {
-
-                        parseredData[i][j] = json.getString(jsonName[j]);
-
-                    }
-
-                }
-
-            }
-
-
-
-
-
-            // 분해 된 데이터를 확인하기 위한 부분
-
-            for(int i=0; i<parseredData.length; i++){
-                Log.i("JSON을 분석한 데이터 "+i+" : ", parseredData[i][0]);
-                Log.i("JSON을 분석한 데이터 "+i+" : ", parseredData[i][1]);
-                Log.i("JSON을 분석한 데이터 "+i+" : ", parseredData[i][2]);
-            }
-
-
-
-            return parseredData;
+            mMap.addMarker(opt1).showInfoWindow();
+            mMap.addMarker(opt2).showInfoWindow();
+            mMap.addMarker(opt3).showInfoWindow();
 
         } catch (JSONException e) {
 
             e.printStackTrace();
 
-            return null;
 
         }
 
@@ -290,10 +303,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng latLng = new LatLng(lat, lon);
 
         // Showing the current location in Google Map
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-        // Map 을 zoom 합니다.
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//
+//        // Map 을 zoom 합니다.
+//        mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
 
         // 마커 설정.
         MarkerOptions optFirst = new MarkerOptions();
@@ -303,6 +316,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         optFirst.icon(BitmapDescriptorFactory.fromResource(R.drawable.red_circle));
         //optFirst.icon(BitmapDescriptorFactory.fromResource(R.drawable.patient));
         mMap.addMarker(optFirst).showInfoWindow();
+
+        LatLng latLng1 = new LatLng(37.562388,126.935292);
+        LatLng latLng2 = new LatLng(37.565784,126.93857200000002);
+        LatLng latLng3 = new LatLng(37.5560736,126.93579769999997);
+
+        MarkerOptions opt1 = new MarkerOptions();
+        opt1.position(latLng1);
+        MarkerOptions opt2 = new MarkerOptions();
+        opt2.position(latLng2);
+        MarkerOptions opt3 = new MarkerOptions();
+        opt3.position(latLng3);
+
+        mMap.addMarker(opt1).showInfoWindow();
+        mMap.addMarker(opt2).showInfoWindow();
+        mMap.addMarker(opt3).showInfoWindow();
+
+        LatLng latLng_p = new LatLng(37.56309,126.93566820000001);
+        MarkerOptions opt_p = new MarkerOptions();
+        opt_p.position(latLng_p);
+        opt_p.icon(BitmapDescriptorFactory.fromResource(R.drawable.patient));
+        mMap.addMarker(opt_p).showInfoWindow();
+
+
+        Log.e("state", Integer.toString(userState));
+        user_id = user_id_tmp;
+        userState = USER_NORMAL;
     }
 
     private View.OnClickListener buttonRefreshClickListener = new View.OnClickListener() {
@@ -398,6 +437,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    public void changeUserState(View view) {
+            user_id = user_id_patient;
+//        if (userState == USER_NORMAL) {
+            userState = USER_EMERGENCY;
+//        } else if (userState == USER_EMERGENCY) {
+//            userState = USER_NORMAL;
+//        }
+    }
 
 
 

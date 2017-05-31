@@ -34,4 +34,12 @@
         android:text="current location"
         android:textSize="15dp"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="change_state"
+        android:layout_toLeftOf="@id/text_view_current_location"
+        android:layout_alignParentBottom="true"
+        android:onClick="changeUserState"/>
+
 </RelativeLayout>
