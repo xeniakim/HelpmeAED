@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -54,6 +57,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import static android.R.attr.handle;
 import static com.sojong.jiyun.helpmeaed.R.drawable.target;
 import static com.sojong.jiyun.helpmeaed.R.id.map;
 
@@ -71,8 +75,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double lat;
     private double lon;
 
-    private TimerTask mTask;
-    private Timer mTimer;
+    public final static int REPEAT_DELAY = 5000;
+    public Handler handler;
 
 
     @Override
@@ -96,16 +100,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         lon = 126.93464719999997;
 
         button_current_location = (ImageButton) findViewById(R.id.button_current_location);
-//        mTask = new TimerTask() {
-//            @Override
-//            public void run() {
-                button_current_location.performClick();
-//            }
-//        };
-//
-//        mTimer = new Timer();
-//        mTimer.schedule(mTask, 1, 7000);
 
+
+        handler = new Handler()
+        {
+            public void handleMessage(Message msg)
+            {
+                super.handleMessage(msg);
+                button_current_location.performClick();
+                this.sendEmptyMessageDelayed(0, REPEAT_DELAY);        // REPEAT_DELAY 간격으로 계속해서 반복하게 만들어준다
+            }
+        };
+
+        handler.sendEmptyMessage(0);
 
     }
 
@@ -147,7 +154,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
            HttpPost post = new HttpPost(URL);
 
 
-            StringEntity jsonparam = new StringEntity(jsonObject.toString());
+            StringEntity jsonparam = new StringEntity(msg);
             //jsonparam.setChunked(true);
 
             jsonparam.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));

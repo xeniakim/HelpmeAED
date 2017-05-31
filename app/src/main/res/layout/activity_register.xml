@@ -1,5 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="7dp"
+        android:layout_marginTop="40dp"
+        android:text="회원가입"
+        android:textColor="#000000"
+        android:textSize="25dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="7dp"
+        android:layout_marginBottom="25dp"
+        android:text="모든 항목에 빠짐없이 기입해 주세요"
+        android:textSize="13dp"/>
+    <!--<EditText-->
+        <!--android:id="@+id/edit_text_user_id"-->
+        <!--android:layout_width="350dp"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:padding="10dp"-->
+        <!--android:layout_marginLeft="15dp"-->
+        <!--android:layout_marginBottom="25dp"-->
+        <!--android:hint="아이디 (영문, 숫자)"/>-->
+    <EditText
+        android:id="@+id/edit_text_password"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:padding="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="25dp"
+        android:hint="패스워드 (영문, 숫자)"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="7dp"
+            android:text="성별"
+            android:textSize="20dp"/>
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="2dp">
+            <RadioButton
+                android:id="@+id/radio_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="남"/>
+            <RadioButton
+                android:id="@+id/radio_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="여"/>
+        </RadioGroup>
+    </LinearLayout>
+    <!--<EditText-->
+    <!--android:layout_width="350dp"-->
+    <!--android:layout_height="40dp"-->
+    <!--android:padding="10dp"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:hint="실명 (신고 접수시 신원 확인을 위해 필요)"/>-->
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/button_register_send"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="15dp"
+        android:layout_marginTop="50dp"
+        android:text="가입하기"
+        android:textSize="25dp"
+        android:textColor="@color/common_google_signin_btn_text_dark"
+        android:background="@color/colorPrimary"
+        android:onClick="sendUserInfo"/>
+
+</LinearLayout>
